@@ -1,13 +1,12 @@
-#include <complex.h>
-#include <stddef.h>
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include "nbsf.h"
 
 #define ROW_SIZE 512
-#define DS_SIZE 5600
+#define DS_SIZE 4096
 
 typedef struct {
     char rows[DS_SIZE][ROW_SIZE];
@@ -75,12 +74,22 @@ void get_counts(Dict *dict, char *key, size_t *spam_count, size_t *ham_count)
 
 int main(int argc, char *argv[])
 {
+    if (argc < 3) {
+        fprintf(stderr,
+                "usage: %s [csv file] [string]\n",
+                argv[0]);
+        return 1;
+    }
+
     Dataset ds_spam;
     Dataset ds_ham;
 
-    FILE *f = fopen("spam.csv", "r");
+    FILE *f = fopen(argv[1], "r");
     if (f == NULL) {
-        printf("Opening of csv file failed!\n");
+        fprintf(stderr,
+                "%s: %s: No such file or directory\n",
+                argv[0],
+                argv[1]);
         return 1;
     }
 
@@ -88,7 +97,7 @@ int main(int argc, char *argv[])
     char *v1;
     char *v2;
 
-    // ignore first row
+    // Ignore first row
     fgets(buffer, ROW_SIZE, f);
 
     int i = 0;
@@ -114,7 +123,7 @@ int main(int argc, char *argv[])
     // Populate dictionary with spam words
     Dict dict;
     char *key;
-    char *sep = " ,.-!?";
+    const char *sep = " ,.-!?";
     for (int i = 0; i < ds_spam.size; i++) {
         key = strtok(ds_spam.rows[i], sep);
         while (key != NULL) {
@@ -138,13 +147,19 @@ int main(int argc, char *argv[])
         }
     }
 
+    // for (int i = 0; i < dict.size; i++) {
+    //     printf("%d\t%s\t\t\t%zu %zu\n", i, dict.keys[i], dict.spam_counts[i], dict.ham_counts[i]);
+    // }
+
 #define MAX_PHRASE_SIZE 128
 
     double word_spam_prs[MAX_PHRASE_SIZE];
-    char phrase[] = "How are you my friend?";
+    // Uncomment to use default string as input
+    // strcpy(argv[2], "Congratulations! You've won a $1,000 Walmart gift card. Go to http://bit.ly/123456 tp claim now.");
     size_t phrase_size = 0;
 
-    key = strtok(phrase, sep);
+    // Uncomment to use a default 
+    key = strtok(argv[2], sep);
     while (key != NULL && phrase_size < MAX_PHRASE_SIZE) {
         for (char *p = key; *p; p++)
             *p = tolower(*p);
@@ -169,7 +184,7 @@ int main(int argc, char *argv[])
     }
 
     double res = phrase_spam_pr(word_spam_prs, phrase_size);
-    printf("RES: %f\n", res);
+    printf("%f\n", res);
 
     return 0;
 }

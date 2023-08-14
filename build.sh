@@ -1,4 +1,5 @@
+#!/usr/bin/env bash
 
 set -xe
 
-gcc main.c nbsf.c
+gcc -pg main.c nbsf.c -o nbsf
