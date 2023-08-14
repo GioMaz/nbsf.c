@@ -138,31 +138,25 @@ int main(int argc, char *argv[])
         }
     }
 
-    // // Print results
-    // for (int i = 0; i < dict.size; i++) {
-    //     printf("%d %s %zu %zu\n", i, dict.keys[i],
-    //             dict.spam_counts[i], dict.ham_counts[i]);
-    // }
-
 #define MAX_PHRASE_SIZE 128
 
-    char phrase[] = "How are you my friend?";
     double word_spam_prs[MAX_PHRASE_SIZE];
+    char phrase[] = "How are you my friend?";
     size_t phrase_size = 0;
+
     key = strtok(phrase, sep);
-    size_t spam_count;
-    size_t ham_count;
-    double word_spam_pr;
-    double word_ham_pr;
-    size_t count;
     while (key != NULL && phrase_size < MAX_PHRASE_SIZE) {
         for (char *p = key; *p; p++)
             *p = tolower(*p);
 
+        size_t spam_count;
+        size_t ham_count;
         get_counts(&dict, key, &spam_count, &ham_count);
-        word_spam_pr = (double) spam_count / (double) ds_spam.size;
-        word_ham_pr = (double) ham_count / (double) ds_ham.size;
-        count = spam_count + ham_count;
+
+        double word_spam_pr = (double) spam_count / (double) ds_spam.size;
+        double word_ham_pr = (double) ham_count / (double) ds_ham.size;
+        size_t count = spam_count + ham_count;
+
         if (word_spam_pr == 0) {
             word_spam_prs[phrase_size] = 0.5;
         } else {
