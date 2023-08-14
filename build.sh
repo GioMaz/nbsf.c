@@ -2,4 +2,4 @@
 
 set -xe
 
-gcc -pg main.c nbsf.c
+gcc -pg main.c nbsf.c -o nbsf

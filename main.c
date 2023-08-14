@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
 
     FILE *f = fopen("spam.csv", "r");
     if (f == NULL) {
-        printf("Failed to open csv file!\n");
+        printf("Failed to open csv file.\n");
         return 1;
     }
 
@@ -140,17 +140,18 @@ int main(int argc, char *argv[])
         }
     }
 
-    for (int i = 0; i < dict.size; i++) {
-        printf("%d\t%s\t\t\t%zu %zu\n", i, dict.keys[i], dict.spam_counts[i], dict.ham_counts[i]);
-    }
+    // for (int i = 0; i < dict.size; i++) {
+    //     printf("%d\t%s\t\t\t%zu %zu\n", i, dict.keys[i], dict.spam_counts[i], dict.ham_counts[i]);
+    // }
 
 #define MAX_PHRASE_SIZE 128
 
     double word_spam_prs[MAX_PHRASE_SIZE];
-    char phrase[] = "Congratulations! You've won a $1,000 Walmart gift card. Go to http://bit.ly/123456 tp claim now.";
+    // char phrase[] = "Congratulations! You've won a $1,000 Walmart gift card. Go to http://bit.ly/123456 tp claim now.";
+    // char *phrase = argv[1];
     size_t phrase_size = 0;
 
-    key = strtok(phrase, sep);
+    key = strtok(argv[1], sep);
     while (key != NULL && phrase_size < MAX_PHRASE_SIZE) {
         for (char *p = key; *p; p++)
             *p = tolower(*p);
@@ -175,7 +176,7 @@ int main(int argc, char *argv[])
     }
 
     double res = phrase_spam_pr(word_spam_prs, phrase_size);
-    printf("RES: %f\n", res);
+    printf("%f\n", res);
 
     return 0;
 }
