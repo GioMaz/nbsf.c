@@ -1,9 +1,8 @@
-#include <complex.h>
-#include <stddef.h>
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include "nbsf.h"
 
 #define ROW_SIZE 512
@@ -23,8 +22,6 @@ typedef struct {
     size_t ham_counts[DICT_CAPACITY];
     size_t size;
 } Dict;
-
-#define HASHSIZE 101
 
 void inc_spam(Dict *dict, char *key)
 {
@@ -77,10 +74,17 @@ void get_counts(Dict *dict, char *key, size_t *spam_count, size_t *ham_count)
 
 int main(int argc, char *argv[])
 {
+    if (argc < 3) {
+        fprintf(stderr,
+                "usage: %s [csv file] [string]\n",
+                argv[0]);
+        exit(1);
+    }
+
     Dataset ds_spam;
     Dataset ds_ham;
 
-    FILE *f = fopen("spam.csv", "r");
+    FILE *f = fopen(argv[1], "r");
     if (f == NULL) {
         printf("Failed to open csv file.\n");
         return 1;
@@ -151,7 +155,7 @@ int main(int argc, char *argv[])
     // char *phrase = argv[1];
     size_t phrase_size = 0;
 
-    key = strtok(argv[1], sep);
+    key = strtok(argv[2], sep);
     while (key != NULL && phrase_size < MAX_PHRASE_SIZE) {
         for (char *p = key; *p; p++)
             *p = tolower(*p);
