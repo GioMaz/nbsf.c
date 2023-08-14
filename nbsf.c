@@ -1,14 +1,12 @@
 #include <stdio.h>
 #include "nbsf.h"
 
-// Initial probability of a word being spam
-#define INITIAL_SPAM_PR 0.45
-
-// Initial probability of a word being spam
-#define INITIAL_HAM_PR (1 - INITIAL_SPAM_PR)
-
-#define STRENGTH 3
-
+/*
+ * Product of probabilities
+ * params:
+ *  - word_spam_prs: array of word probabilities
+ *  - dim: size of the array
+ */
 double product(double *word_spam_prs, int dim)
 {
     double res = 1;
@@ -18,6 +16,12 @@ double product(double *word_spam_prs, int dim)
     return res;
 }
 
+/*
+ * Product of complementaries of probabilities
+ * params:
+ *  - word_spam_prs: array of word probabilities
+ *  - dim: size of the array
+ */
 double comp_product(double *word_spam_prs, int dim)
 {
     double res = 1;
@@ -27,6 +31,13 @@ double comp_product(double *word_spam_prs, int dim)
     return res;
 }
 
+/*
+ * Probability that a word is spam given the probability
+ * that that word is in a spam message and in a ham message
+ * params:
+ *  - word_spam_pr: probability that a word is spam
+ *  - word_ham_pr: probability that a word is ham
+ */
 double spam_word_pr(double word_spam_pr, double word_ham_pr)
 {
     double num = word_spam_pr * INITIAL_SPAM_PR;
@@ -39,8 +50,18 @@ double spam_word_pr(double word_spam_pr, double word_ham_pr)
     return num / den;
 }
 
+/*
+ * Corrected version of spam_word_pr
+ * params:
+ *  - word_spam_pr: probability that a word is spam
+ *  - word_ham_pr: probability that a word is ham
+ *  - n: number of times the word is present in the training dataset
+ */
 double spam_word_pr_corrected(double word_spam_pr, double word_ham_pr, int n)
 {
+    if (n == 0)
+        return INITIAL_SPAM_PR;
+
     double sw_pr = spam_word_pr(word_spam_pr, word_ham_pr);
     double num = (STRENGTH * INITIAL_SPAM_PR) + (n * sw_pr);
     double den = STRENGTH + n;
@@ -48,6 +69,13 @@ double spam_word_pr_corrected(double word_spam_pr, double word_ham_pr, int n)
     return num / den;
 }
 
+/*
+ * Probability that a message is spam given the
+ * single word probabilities
+ * params:
+ *  - word_spam_pr: array of word probabilities in a message
+ *  - dim: size of the array
+ */
 double phrase_spam_pr(double *word_spam_prs, int dim)
 {
     double num = product(word_spam_prs, dim);

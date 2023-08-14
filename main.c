@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include "nbsf.h"
 
+#define DEBUG 0
+
 #define ROW_SIZE 512
 #define DS_SIZE 4096
 
@@ -147,20 +149,22 @@ int main(int argc, char *argv[])
         }
     }
 
-    // for (int i = 0; i < dict.size; i++) {
-    //     printf("%d\t%s\t\t\t%zu %zu\n", i, dict.keys[i], dict.spam_counts[i], dict.ham_counts[i]);
-    // }
+#if DEBUG
+    for (int i = 0; i < dict.size; i++) {
+        printf("%d\t%s\t\t\t%zu %zu\n", i, dict.keys[i], dict.spam_counts[i], dict.ham_counts[i]);
+    }
+#endif
 
-#define MAX_PHRASE_SIZE 128
+#define MAX_MSG_SIZE 128
 
-    double word_spam_prs[MAX_PHRASE_SIZE];
+    double word_spam_prs[MAX_MSG_SIZE];
     // Uncomment to use default string as input
     // strcpy(argv[2], "Congratulations! You've won a $1,000 Walmart gift card. Go to http://bit.ly/123456 tp claim now.");
-    size_t phrase_size = 0;
+    size_t msg_size = 0;
 
     // Uncomment to use a default 
     key = strtok(argv[2], sep);
-    while (key != NULL && phrase_size < MAX_PHRASE_SIZE) {
+    while (key != NULL && msg_size < MAX_MSG_SIZE) {
         for (char *p = key; *p; p++)
             *p = tolower(*p);
 
@@ -172,18 +176,14 @@ int main(int argc, char *argv[])
         double word_ham_pr = (double) ham_count / (double) ds_ham.size;
         size_t count = spam_count + ham_count;
 
-        if (word_spam_pr == 0) {
-            word_spam_prs[phrase_size] = 0.5;
-        } else {
-            word_spam_prs[phrase_size] = 
-                spam_word_pr_corrected(word_spam_pr, word_ham_pr, count);
-        }
+        word_spam_prs[msg_size] = 
+            spam_word_pr_corrected(word_spam_pr, word_ham_pr, count);
 
-        phrase_size++;
+        msg_size++;
         key = strtok(NULL, sep);
     }
 
-    double res = phrase_spam_pr(word_spam_prs, phrase_size);
+    double res = phrase_spam_pr(word_spam_prs, msg_size);
     printf("%f\n", res);
 
     return 0;
