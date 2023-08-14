@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
         fprintf(stderr,
                 "usage: %s [csv file] [string]\n",
                 argv[0]);
-        exit(1);
+        return 1;
     }
 
     Dataset ds_spam;
@@ -86,7 +86,10 @@ int main(int argc, char *argv[])
 
     FILE *f = fopen(argv[1], "r");
     if (f == NULL) {
-        printf("Failed to open csv file.\n");
+        fprintf(stderr,
+                "%s: %s: No such file or directory\n",
+                argv[0],
+                argv[1]);
         return 1;
     }
 
@@ -151,10 +154,11 @@ int main(int argc, char *argv[])
 #define MAX_PHRASE_SIZE 128
 
     double word_spam_prs[MAX_PHRASE_SIZE];
-    // char phrase[] = "Congratulations! You've won a $1,000 Walmart gift card. Go to http://bit.ly/123456 tp claim now.";
-    // char *phrase = argv[1];
+    // Uncomment to use default string as input
+    // strcpy(argv[2], "Congratulations! You've won a $1,000 Walmart gift card. Go to http://bit.ly/123456 tp claim now.");
     size_t phrase_size = 0;
 
+    // Uncomment to use a default 
     key = strtok(argv[2], sep);
     while (key != NULL && phrase_size < MAX_PHRASE_SIZE) {
         for (char *p = key; *p; p++)
