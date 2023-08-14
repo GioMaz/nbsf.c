@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include "nbsf.h"
 
-#define INITIAL_SPAM_PR 0.5
+// Initial probability of a word being spam
+#define INITIAL_SPAM_PR 0.45
+
+// Initial probability of a word being spam
 #define INITIAL_HAM_PR (1 - INITIAL_SPAM_PR)
+
 #define STRENGTH 3
 
 double product(double *word_spam_prs, int dim)

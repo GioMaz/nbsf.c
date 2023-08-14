@@ -7,7 +7,7 @@
 #include "nbsf.h"
 
 #define ROW_SIZE 512
-#define DS_SIZE 5600
+#define DS_SIZE 4096
 
 typedef struct {
     char rows[DS_SIZE][ROW_SIZE];
@@ -23,6 +23,8 @@ typedef struct {
     size_t ham_counts[DICT_CAPACITY];
     size_t size;
 } Dict;
+
+#define HASHSIZE 101
 
 void inc_spam(Dict *dict, char *key)
 {
@@ -80,7 +82,7 @@ int main(int argc, char *argv[])
 
     FILE *f = fopen("spam.csv", "r");
     if (f == NULL) {
-        printf("Opening of csv file failed!\n");
+        printf("Failed to open csv file!\n");
         return 1;
     }
 
@@ -88,7 +90,7 @@ int main(int argc, char *argv[])
     char *v1;
     char *v2;
 
-    // ignore first row
+    // Ignore first row
     fgets(buffer, ROW_SIZE, f);
 
     int i = 0;
@@ -114,7 +116,7 @@ int main(int argc, char *argv[])
     // Populate dictionary with spam words
     Dict dict;
     char *key;
-    char *sep = " ,.-!?";
+    const char *sep = " ,.-!?";
     for (int i = 0; i < ds_spam.size; i++) {
         key = strtok(ds_spam.rows[i], sep);
         while (key != NULL) {
@@ -138,10 +140,14 @@ int main(int argc, char *argv[])
         }
     }
 
+    for (int i = 0; i < dict.size; i++) {
+        printf("%d\t%s\t\t\t%zu %zu\n", i, dict.keys[i], dict.spam_counts[i], dict.ham_counts[i]);
+    }
+
 #define MAX_PHRASE_SIZE 128
 
     double word_spam_prs[MAX_PHRASE_SIZE];
-    char phrase[] = "How are you my friend?";
+    char phrase[] = "Congratulations! You've won a $1,000 Walmart gift card. Go to http://bit.ly/123456 tp claim now.";
     size_t phrase_size = 0;
 
     key = strtok(phrase, sep);
