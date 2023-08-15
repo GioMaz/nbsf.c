@@ -2,7 +2,6 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
-#include <stdlib.h>
 #include "nbsf.h"
 
 #define DEBUG 0

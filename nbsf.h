@@ -1,6 +1,10 @@
 #ifndef NBSF_H
 #define NBSF_H
 
+/*
+ * TRAINING PARAMETERS
+ */
+
 // Initial probability of a word being spam
 #define INITIAL_SPAM_PR 0.45
 
@@ -8,7 +12,8 @@
 #define INITIAL_HAM_PR (1 - INITIAL_SPAM_PR)
 
 // If there are 3 spam messages with a specific word
-// more confidence in the spamicity than in INITIAL_SPAM_PR
+// more confidence will be put in the spamicity 
+// rather than in the INITIAL_SPAM_PR
 #define STRENGTH 3
 
 double product(double *, int);
