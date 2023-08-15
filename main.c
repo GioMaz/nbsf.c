@@ -16,7 +16,7 @@ typedef struct {
 } Dataset;
 
 #define KEY_SIZE 128
-#define DICT_CAPACITY 16348
+#define DICT_CAPACITY 4096
 
 typedef struct {
     char keys[DICT_CAPACITY][KEY_SIZE];
@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
 {
     if (argc < 3) {
         fprintf(stderr,
-                "usage: %s [csv file] [string]\n",
+                "usage: %s [csv file] [message]\n",
                 argv[0]);
         return 1;
     }
@@ -182,7 +182,6 @@ int main(int argc, char *argv[])
 #if DEBUG
         printf("key: %s\twsp: %f whp: %f swp: %f\n", key, word_spam_pr, word_ham_pr, spam_word_prs[msg_size]);
 #endif
-
 
         msg_size++;
         key = strtok(NULL, sep);
