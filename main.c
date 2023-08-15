@@ -8,7 +8,7 @@
 #define DEBUG 0
 
 #define ROW_SIZE 512
-#define DS_SIZE 4096
+#define DS_SIZE 1024
 
 typedef struct {
     char rows[DS_SIZE][ROW_SIZE];
@@ -157,7 +157,7 @@ int main(int argc, char *argv[])
 
 #define MAX_MSG_SIZE 128
 
-    double word_spam_prs[MAX_MSG_SIZE];
+    double spam_word_prs[MAX_MSG_SIZE];
     // Uncomment to use default string as input
     // strcpy(argv[2], "Congratulations! You've won a $1,000 Walmart gift card. Go to http://bit.ly/123456 tp claim now.");
     size_t msg_size = 0;
@@ -176,14 +176,19 @@ int main(int argc, char *argv[])
         double word_ham_pr = (double) ham_count / (double) ds_ham.size;
         size_t count = spam_count + ham_count;
 
-        word_spam_prs[msg_size] = 
+        spam_word_prs[msg_size] = 
             spam_word_pr_corrected(word_spam_pr, word_ham_pr, count);
+
+#if DEBUG
+        printf("key: %s\twsp: %f whp: %f swp: %f\n", key, word_spam_pr, word_ham_pr, spam_word_prs[msg_size]);
+#endif
+
 
         msg_size++;
         key = strtok(NULL, sep);
     }
 
-    double res = phrase_spam_pr(word_spam_prs, msg_size);
+    double res = msg_spam_pr(spam_word_prs, msg_size);
     printf("%f\n", res);
 
     return 0;

@@ -44,9 +44,6 @@ double spam_word_pr(double word_spam_pr, double word_ham_pr)
     double den = (word_spam_pr * INITIAL_SPAM_PR)
         + (word_ham_pr * INITIAL_HAM_PR);
 
-    // printf("ISP: %f IHP: %f\n", INITIAL_SPAM_PR, INITIAL_HAM_PR);
-    // printf("wsp: %f whp: %f\n", word_spam_pr, word_ham_pr);
-    // printf("num: %f den: %f\n\n", num, den);
     return num / den;
 }
 
@@ -76,7 +73,7 @@ double spam_word_pr_corrected(double word_spam_pr, double word_ham_pr, int n)
  *  - word_spam_pr: array of word probabilities in a message
  *  - dim: size of the array
  */
-double phrase_spam_pr(double *word_spam_prs, int dim)
+double msg_spam_pr(double *word_spam_prs, int dim)
 {
     double num = product(word_spam_prs, dim);
     double den = comp_product(word_spam_prs, dim) + num;
