@@ -1,6 +1,6 @@
 # nbsf.c
 
-Naive Bayesian Spam Filter
+Naive Bayes Spam Filter
 
 ### usage
 
