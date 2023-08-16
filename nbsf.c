@@ -56,7 +56,7 @@ double spam_word_pr(double word_spam_pr, double word_ham_pr)
  */
 double spam_word_pr_corrected(double word_spam_pr, double word_ham_pr, int n)
 {
-    if (word_spam_pr  == 0)
+    if (n == 0)
         return INITIAL_SPAM_PR;
 
     double sw_pr = spam_word_pr(word_spam_pr, word_ham_pr);

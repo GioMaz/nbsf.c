@@ -173,10 +173,10 @@ int main(int argc, char *argv[])
 
         double word_spam_pr = (double) spam_count / (double) ds_spam.size;
         double word_ham_pr = (double) ham_count / (double) ds_ham.size;
-        size_t count = spam_count + ham_count;
+        size_t n = spam_count + ham_count;
 
         spam_word_prs[msg_size] = 
-            spam_word_pr_corrected(word_spam_pr, word_ham_pr, count);
+            spam_word_pr_corrected(word_spam_pr, word_ham_pr, n);
 
 #if DEBUG
         printf("key: %s\twsp: %f whp: %f swp: %f\n", key, word_spam_pr, word_ham_pr, spam_word_prs[msg_size]);
