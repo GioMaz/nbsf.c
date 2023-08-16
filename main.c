@@ -6,16 +6,16 @@
 
 #define DEBUG 0
 
+#define DS_SIZE 2048
 #define ROW_SIZE 512
-#define DS_SIZE 1024
 
 typedef struct {
     char rows[DS_SIZE][ROW_SIZE];
     int size;
 } Dataset;
 
-#define KEY_SIZE 128
 #define DICT_CAPACITY 4096
+#define KEY_SIZE 128
 
 typedef struct {
     char keys[DICT_CAPACITY][KEY_SIZE];
