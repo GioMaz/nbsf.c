@@ -6,5 +6,5 @@ Naive Bayes Spam Filter
 
 ```bash
 ./build.sh
-./nbsf ds.csv "This is an example message"
+./nbsf ./dataset/tds.csv ./dataset/eds.csv
 ```
