@@ -115,7 +115,8 @@ int main(int argc, char **argv)
     // Percentage of actual positives predicted correctly (also called sensitivity)
     double recall = ((double) tp) / ((double) (tp + fn));
 
-    // Percentage of times the model is correct (bad index for evaluation)
+    // Percentage of times the model is correctly
+    // this is a bad index because the dataset is imbalanced
     double accuracy = ((double) (tp + tn)) / ((double) (tp + fp + tn + fn));
 
     printf("True positive: %zu\n", tp);
