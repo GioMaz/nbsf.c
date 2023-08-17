@@ -1,11 +1,10 @@
-#include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
 #include "train.h"
 #include "nbsf.h"
 
-#define DEBUG 1
+#define DEBUG 0
 
 #define MAX_MSG_SIZE 128
 
@@ -42,13 +41,13 @@ int main(int argc, char **argv)
 {
     if (argc < 3) {
         fprintf(stderr,
-                "usage: %s [csv file] [message]\n",
+                "usage: %s [training data] [evaluation data]\n",
                 argv[0]);
         return 1;
     }
 
-    FILE *f = fopen(argv[1], "r");
-    if (f == NULL) {
+    FILE *f_train = fopen(argv[1], "r");
+    if (f_train == NULL) {
         fprintf(stderr,
                 "%s: %s: No such file or directory\n",
                 argv[0],
@@ -56,10 +55,18 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    FILE *f_eval = fopen(argv[2], "r");
+    if (f_train == NULL) {
+        fprintf(stderr,
+                "%s: %s: No such file or directory\n",
+                argv[0],
+                argv[2]);
+        return 1;
+    }
+
     // Populate datasets with csv rows
-    Dataset ds_spam;
-    Dataset ds_ham;
-    read_csv(f, &ds_spam, &ds_ham);
+    Dataset ds_spam, ds_ham;
+    read_csv(f_train, &ds_spam, &ds_ham);
 
     // Populate dictionary with spam words
     Dict dict;
@@ -73,13 +80,51 @@ int main(int argc, char **argv)
     }
 #endif
 
+    Dataset ds_spam_eval, ds_ham_eval;
+    read_csv(f_eval, &ds_spam_eval, &ds_ham_eval);
+
+    size_t tp = 0, fp = 0, tn = 0, fn = 0;
+
     double spam_word_prs[MAX_MSG_SIZE];
     size_t msg_size = 0;
-    get_spam_word_prs(&dict, &ds_spam, &ds_ham,
-            spam_word_prs, &msg_size, argv[2], sep);
+    for (int i = 0; i < ds_spam_eval.size; i++) {
+        get_spam_word_prs(&dict, &ds_spam, &ds_ham,
+                spam_word_prs, &msg_size, ds_spam_eval.rows[i], sep);
 
-    double res = msg_spam_pr(spam_word_prs, msg_size);
-    printf("%f\n", res);
+        double res = msg_spam_pr(spam_word_prs, msg_size);
+
+        msg_size = 0;
+
+        res > INITIAL_HAM_PR ? tp++ : fp++;
+    }
+
+    for (int i = 0; i < ds_ham_eval.size; i++) {
+        get_spam_word_prs(&dict, &ds_spam, &ds_ham,
+                spam_word_prs, &msg_size, ds_ham_eval.rows[i], sep);
+
+        double res = msg_spam_pr(spam_word_prs, msg_size);
+
+        msg_size = 0;
+
+        res < INITIAL_HAM_PR ? tn++ : fn++;
+    }
+
+    // Percentage of predicted positives that are actually positives
+    double precision = ((double) tp) / ((double) (tp + fp));
+
+    // Percentage of actual positives predicted correctly (also called sensitivity)
+    double recall = ((double) tp) / ((double) (tp + fn));
+
+    // Percentage of times the model is correct (bad index for evaluation)
+    double accuracy = ((double) (tp + tn)) / ((double) (tp + fp + tn + fn));
+
+    printf("True positive: %zu\n", tp);
+    printf("False positive: %zu\n", fp);
+    printf("True negative: %zu\n", tn);
+    printf("False negative: %zu\n", fn);
+    printf("Precision: %f\n", precision);
+    printf("Recall: %f\n", recall);
+    printf("Accuracy: %f\n", accuracy);
 
     return 0;
 }
