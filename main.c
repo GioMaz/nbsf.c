@@ -56,15 +56,14 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    // Populate datasets with csv rows
     Dataset ds_spam;
     Dataset ds_ham;
-
     read_csv(f, &ds_spam, &ds_ham);
 
     // Populate dictionary with spam words
     Dict dict;
     const char *sep = " ,.-!?";
-
     populate_dict(&dict, &ds_spam, sep, true);
     populate_dict(&dict, &ds_ham, sep, false);
 
@@ -76,8 +75,9 @@ int main(int argc, char **argv)
 
     double spam_word_prs[MAX_MSG_SIZE];
     size_t msg_size = 0;
+    get_spam_word_prs(&dict, &ds_spam, &ds_ham,
+            spam_word_prs, &msg_size, argv[2], sep);
 
-    get_spam_word_prs(&dict, &ds_spam, &ds_ham, spam_word_prs, &msg_size, argv[2], sep);
     double res = msg_spam_pr(spam_word_prs, msg_size);
     printf("%f\n", res);
 

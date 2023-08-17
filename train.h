@@ -1,11 +1,14 @@
+#ifndef TRAIN_H
+#define TRAIN_H
+
 #include <stdlib.h>
 #include <stdio.h>
 
-#define DS_SIZE 2048
+#define TS_SIZE 2048
 #define ROW_SIZE 512
 
 typedef struct {
-    char rows[DS_SIZE][ROW_SIZE];
+    char rows[TS_SIZE][ROW_SIZE];
     int size;
 } Dataset;
 
@@ -23,3 +26,5 @@ void read_csv(FILE *f, Dataset *ds_spam, Dataset *ds_ham);
 void populate_dict(Dict *dict, Dataset *ds, const char *sep, bool spam);
 void inc_dict(Dict *dict, char *key, bool spam);
 void get_counts(Dict *dict, char *key, size_t *spam_count, size_t *ham_count);
+
+#endif

@@ -12,7 +12,7 @@ void read_csv(FILE *f, Dataset *ds_spam, Dataset *ds_ham)
     fgets(buffer, ROW_SIZE, f);
 
     int i = 0;
-    while (!feof(f) && i < DS_SIZE) {
+    while (!feof(f) && i < TS_SIZE) {
         fgets(buffer, ROW_SIZE, f);
 
         v1 = strtok(buffer, ",");
