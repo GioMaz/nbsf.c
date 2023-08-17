@@ -2,4 +2,4 @@
 
 set -xe
 
-clang main.c nbsf.c -o nbsf
+clang main.c train.c nbsf.c -o nbsf
