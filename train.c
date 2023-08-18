@@ -19,7 +19,7 @@ void read_csv(FILE *f, Dataset *ds_spam, Dataset *ds_ham)
         v2 = strtok(NULL, ",,,");
 
         if (v2 != NULL) {
-            if (strcmp(v1, "ham")) {
+            if (strcmp(v1, "ham") == 0) {
                 strcpy(ds_spam->rows[ds_spam->size], v2);
                 ds_spam->size++;
             } else {
