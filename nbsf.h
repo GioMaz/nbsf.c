@@ -6,7 +6,7 @@
  */
 
 // Initial probability of a word being spam
-#define INITIAL_SPAM_PR 0.5
+#define INITIAL_SPAM_PR 0.6
 
 // Initial probability of a word being spam
 #define INITIAL_HAM_PR (1 - INITIAL_SPAM_PR)
