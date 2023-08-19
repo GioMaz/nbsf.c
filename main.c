@@ -96,7 +96,7 @@ int main(int argc, char **argv)
 
         msg_size = 0;
 
-        res > INITIAL_HAM_PR ? tp++ : fp++;
+        res > INITIAL_SPAM_PR ? tp++ : fp++;
     }
 
     for (int i = 0; i < ds_ham_eval.size; i++) {
@@ -107,7 +107,7 @@ int main(int argc, char **argv)
 
         msg_size = 0;
 
-        res < INITIAL_HAM_PR ? tn++ : fn++;
+        res < INITIAL_SPAM_PR ? tn++ : fn++;
     }
 
     // Percentage of predicted positives that are actually positives
