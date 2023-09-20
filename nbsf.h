@@ -16,10 +16,10 @@
 // rather than in the INITIAL_SPAM_PR
 #define STRENGTH 3
 
-double product(double *, int);
-double comp_product(double *, int);
-double spam_word_pr(double, double);
-double spam_word_pr_corrected(double, double, int);
-double msg_spam_pr(double *, int);
+double product(double *word_spam_prs, int dim);
+double comp_product(double *word_spam_prs, int dim);
+double spam_word_pr(double word_spam_pr, double word_ham_pr);
+double spam_word_pr_corrected(double word_spam_pr, double word_ham_pr, int n);
+double msg_spam_pr(double *word_spam_prs, int dim);
 
 #endif

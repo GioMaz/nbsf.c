@@ -4,7 +4,7 @@
 #include "train.h"
 #include "nbsf.h"
 
-#define DEBUG 0
+#define DEBUG 1
 
 #define MAX_MSG_SIZE 128
 
