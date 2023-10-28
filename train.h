@@ -9,7 +9,7 @@
 
 typedef struct {
     char rows[TS_SIZE][ROW_SIZE];
-    int size;
+    size_t size;
 } Dataset;
 
 #define DICT_CAPACITY 4096

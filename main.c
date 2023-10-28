@@ -4,7 +4,7 @@
 #include "train.h"
 #include "nbsf.h"
 
-#define DEBUG 1
+#define DEBUG 0
 
 #define MAX_MSG_SIZE 128
 
@@ -75,7 +75,7 @@ int main(int argc, char **argv)
     populate_dict(&dict, &ds_ham, sep, false);
 
 #if DEBUG
-    for (int i = 0; i < dict.size; i++) {
+    for (size_t i = 0; i < dict.size; i++) {
         printf("%d\t%s\t\t\t%zu %zu\n", i, dict.keys[i], dict.spam_counts[i], dict.ham_counts[i]);
     }
 #endif
@@ -88,7 +88,7 @@ int main(int argc, char **argv)
 
     double spam_word_prs[MAX_MSG_SIZE];
     size_t msg_size = 0;
-    for (int i = 0; i < ds_spam_eval.size; i++) {
+    for (size_t i = 0; i < ds_spam_eval.size; i++) {
         get_spam_word_prs(&dict, &ds_spam, &ds_ham,
                 spam_word_prs, &msg_size, ds_spam_eval.rows[i], sep);
 
@@ -99,7 +99,7 @@ int main(int argc, char **argv)
         res > INITIAL_SPAM_PR ? tp++ : fp++;
     }
 
-    for (int i = 0; i < ds_ham_eval.size; i++) {
+    for (size_t i = 0; i < ds_ham_eval.size; i++) {
         get_spam_word_prs(&dict, &ds_spam, &ds_ham,
                 spam_word_prs, &msg_size, ds_ham_eval.rows[i], sep);
 

@@ -6,10 +6,10 @@
  *  - word_spam_prs: array of word probabilities
  *  - dim: size of the array
  */
-double product(double *word_spam_prs, int dim)
+double product(double *word_spam_prs, size_t dim)
 {
     double res = 1;
-    for (int i = 0; i < dim; ++i) {
+    for (size_t i = 0; i < dim; ++i) {
         res *= word_spam_prs[i];
     }
     return res;
@@ -21,10 +21,10 @@ double product(double *word_spam_prs, int dim)
  *  - word_spam_prs: array of word probabilities
  *  - dim: size of the array
  */
-double comp_product(double *word_spam_prs, int dim)
+double comp_product(double *word_spam_prs, size_t dim)
 {
     double res = 1;
-    for (int i = 0; i < dim; ++i) {
+    for (size_t i = 0; i < dim; ++i) {
         res *= 1 - word_spam_prs[i];
     }
     return res;
@@ -53,7 +53,7 @@ double spam_word_pr(double word_spam_pr, double word_ham_pr)
  *  - word_ham_pr: probability that a word is ham
  *  - n: number of times the word is present in the training dataset
  */
-double spam_word_pr_corrected(double word_spam_pr, double word_ham_pr, int n)
+double spam_word_pr_corrected(double word_spam_pr, double word_ham_pr, size_t n)
 {
     if (n == 0)
         return INITIAL_SPAM_PR;
@@ -72,7 +72,7 @@ double spam_word_pr_corrected(double word_spam_pr, double word_ham_pr, int n)
  *  - word_spam_pr: array of word probabilities in a message
  *  - dim: size of the array
  */
-double msg_spam_pr(double *word_spam_prs, int dim)
+double msg_spam_pr(double *word_spam_prs, size_t dim)
 {
     double num = product(word_spam_prs, dim);
     double den = comp_product(word_spam_prs, dim) + num;
