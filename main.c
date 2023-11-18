@@ -67,6 +67,7 @@ int main(int argc, char **argv)
     // Populate datasets with csv rows
     Dataset ds_spam, ds_ham;
     read_csv(f_train, &ds_spam, &ds_ham);
+    fclose(f_train);
 
     // Populate dictionary with spam words
     Dict dict;
@@ -83,6 +84,7 @@ int main(int argc, char **argv)
     // Evaluation
     Dataset ds_spam_eval, ds_ham_eval;
     read_csv(f_eval, &ds_spam_eval, &ds_ham_eval);
+    fclose(f_eval);
 
     size_t tp = 0, fp = 0, tn = 0, fn = 0;
 
